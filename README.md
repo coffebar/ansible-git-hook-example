@@ -32,6 +32,8 @@ You may change this.
 
 You also can make some adjustments like this:
 
+```bash
 git config --add --local core.sshCommand 'ssh -i ~/.ssh/id_rsa'
+```
 
 Or configure it globally in ~/.ssh/config
