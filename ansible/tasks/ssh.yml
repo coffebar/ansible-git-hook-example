@@ -1,0 +1,5 @@
+- name: add authorized key
+  ansible.posix.authorized_key:
+    user: '{{ git.username }}'
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

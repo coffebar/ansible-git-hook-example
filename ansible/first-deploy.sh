@@ -5,6 +5,6 @@ _DIR=$(dirname "$_DIR")
 pushd "$_DIR" || exit 3
 
 ansible-playbook -b --inventory ./hosts \
-	-vv server-setup.yml
+	-vv git-deployment-setup.yml
 
 popd > /dev/null || echo ""

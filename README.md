@@ -21,3 +21,15 @@ When you commit and push some changes to live, it will be on server.
 ```bash
 git push live master
 ```
+
+### SSH key
+
+By default, git user will be authorized to log-in 
+by ssh with you key located at ~/.ssh/id_rsa
+You may change this.
+
+You also can make some adjustments like this:
+
+git config --add --local core.sshCommand 'ssh -i ~/.ssh/id_rsa'
+
+Or configure it globally in ~/.ssh/config

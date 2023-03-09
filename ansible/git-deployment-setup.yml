@@ -13,6 +13,7 @@
 
   tasks:
 
-    - import_tasks: tasks/packages_tasks.yml
-    - import_tasks: tasks/git_tasks.yml
+    # - import_tasks: tasks/packages.yml
+    # - import_tasks: tasks/git.yml
+    - import_tasks: tasks/ssh.yml
 
