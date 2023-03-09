@@ -28,6 +28,7 @@ git push live master
 
 By default, git user will be authorized to log-in 
 by ssh with you key located at ~/.ssh/id_rsa
+
 You may change this.
 
 You also can make some adjustments like this:
