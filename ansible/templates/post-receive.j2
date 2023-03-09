@@ -1,0 +1,9 @@
+cd "{{ project_root }}" || exit
+
+# checkout new version into www dir
+git --work-tree="./" --git-dir="/home/{{ git.username }}/{{ git.repo_name }}" \
+  checkout -f
+
+# install node_modules and build assets
+npm ci
+

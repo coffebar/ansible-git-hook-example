@@ -1,0 +1,57 @@
+
+- name: create a new user with home directory
+  user:
+    name: '{{ git.username }}'
+    shell: /usr/bin/git-shell
+    groups: www-data
+    create_home: yes
+    password: '!'
+
+- name: clone git repo to bare
+  delegate_to: localhost
+  become: no
+  shell: 'git clone --bare "{{ git.repo_path }}" ./{{ git.repo_name }}'
+
+- name: archive repo files to templates/ansible-git.zip
+  delegate_to: localhost
+  become: no
+  archive:
+    format: zip
+    path: '{{ git.repo_name }}'
+    remove: yes
+    dest: templates/ansible-git.zip
+
+- name: copy git repo to server
+  copy: src=templates/ansible-git.zip dest=/root/ansible-git.zip
+
+- name: remove local zip file
+  delegate_to: localhost
+  become: no
+  file: path=templates/ansible-git.zip state=absent
+
+- name: unzip git repo
+  unarchive: src=/root/ansible-git.zip dest='/home/{{ git.username }}/' remote_src=yes owner='{{ git.username }}'
+
+- name: remove remote zip file
+  file: path=/root/ansible-git.zip state=absent
+
+- name: Chown www dir
+  file: name='{{ project_root }}' state=directory group=www-data owner='{{ git.username }}'
+
+- name: Add post-receive hook for deployment
+  template:
+    src: post-receive.j2
+    dest: '/home/{{ git.username }}/{{ git.repo_name }}/hooks/post-receive'
+    owner: '{{ git.username }}'
+    group: '{{ git.username }}'
+    mode: '0755'
+
+- name: checkout repo into project_root by using post-receive hook
+  shell: '/home/{{ git.username }}/{{ git.repo_name }}/hooks/post-receive'
+  become: true
+  become_user: '{{ git.username }}'
+
+- name: check npm package installed
+  file:
+    path: '{{ project_root }}/node_modules/axios/package.json'
+    state: file

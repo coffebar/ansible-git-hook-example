@@ -1,0 +1,18 @@
+- name: setup continuous delivery via git post-receive hook
+  hosts: root
+  gather_facts: no
+
+  pre_tasks:
+
+    - name: check local path to git repo is correct
+      file:
+        path: '{{ git.repo_path }}/.git'
+        state: directory
+      delegate_to: localhost
+      become: no
+
+  tasks:
+
+    - import_tasks: tasks/packages_tasks.yml
+    - import_tasks: tasks/git_tasks.yml
+

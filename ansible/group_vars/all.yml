@@ -1,0 +1,14 @@
+---
+
+git:
+  # local path where ansible can find git repo
+  # to upload it on the server
+  repo_path: '..'
+  # user will be created for deployment
+  username: git
+  # repo direcory name inside user's home
+  repo_name: project.git
+
+node_version: '16'
+
+project_root: '/home/git/project_root'
