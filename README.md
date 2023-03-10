@@ -13,7 +13,7 @@ for example.
 - You need to have ansible installed on local machine.
 - Edit servers list (inventory file) with root users:
 `ansible/hosts`
-- Clone repo and run './ansible/first-deploy.sh
+- Clone repo and run `./ansible/first-deploy.sh`
 - When it succeeds, add remote repo to git, for example:
 ```bash
 git remote add live ssh://git@us2/home/git/project.git
