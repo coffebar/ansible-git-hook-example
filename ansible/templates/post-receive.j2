@@ -1,9 +1,25 @@
-cd "{{ project_root }}" || exit
+REPO_DIR="/home/{{ git.username }}/{{ git.repo_name }}"
+PROJ_DIR="{{ project_root }}"
+
+cd "$REPO_DIR" || exit 2
+
+GIT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+# deploy only when push to the main branch
+if [ "$GIT_BRANCH" != "main" ]; then
+  echo "No deployment for branch $GIT_BRANCH"
+  exit 0
+fi
+
+cd "$PROJ_DIR" || exit 2
+
+BUILD_START_TIME=$(date +%s)
 
 # checkout new version into www dir
-git --work-tree="./" --git-dir="/home/{{ git.username }}/{{ git.repo_name }}" \
-  checkout -f
+git --work-tree="./" --git-dir="$REPO_DIR" checkout -f
 
 # install node_modules and build assets
 npm ci
 
+BUILD_END_TIME=$(date +%s)
+
+echo "Build time: $((BUILD_END_TIME - BUILD_START_TIME))s"
